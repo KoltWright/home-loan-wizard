@@ -1,14 +1,17 @@
 import React,  { Component } from 'react';
 import {Link} from 'react-router-dom'
+import { connect } from 'react-redux';
+import { updateLoneType, updatePropertyType } from '../../ducks/reducer.js';
 
 class WizardOne extends Component {
-    render(){
+    render() {
+      const {updateLoneType, updatePropertyType} = this.props;
         return(
             <div className="parent-div">
                 <div className="vert-align">
                     <p>What type of loan will you be needing?</p> <br />
-                
-                    <select onChange={this.props.handleLoanType}>
+
+                    <select onChange={(e) => updateLoneType(e.target.value)}>
 
                         <option type="text" value="Home Purchase" >Home Purchase</option>
                         <option type="text" value="Refinance" >Refinance</option>
@@ -18,7 +21,7 @@ class WizardOne extends Component {
 
                     <p>What type of property are you purchasing?</p> <br />
 
-                    <select onChange={this.props.handlePropType}>
+                    <select onChange={(e) => updatePropertyType(e.target.value)}>
 
                         <option value="Single Family Home">Single Family Home</option>
                         <option value="Town Home">Townhome</option>
@@ -27,11 +30,19 @@ class WizardOne extends Component {
                         <option value="Mobile Home">Mobile Home</option>
 
                     </select>
-                    
+
                     <Link to="/wTwo"><button className="margin-btn"> Next </button></Link>
                 </div>
             </div>
         )
     }
 }
-export default WizardOne; 
+
+function mapStateToProps(state) {
+  return {
+    loanType: state.loneType,
+    propertyType: state.propertyType
+  };
+}
+
+export default connect(mapStateToProps, {updateLoneType, updatePropertyType})(WizardOne);
